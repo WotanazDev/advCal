@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <title>Adventskalender 2025</title>
+
+  <!-- iPhone / PWA-ish feel -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#05050a" />
+
+  <style>
+    /* =========================================================
+       Adventskalender – White / Black / Silver + subtle Xmas
+       App-like, iPhone-first
+       ========================================================= */
+
+    :root {
+      --bg-0: #000000;
+      --bg-1: #05050a;
+      --bg-2: #0b0c14;
+
+      --tile-bg: #0a0b12;
+      --tile-border: rgba(192,192,192,0.28);
+
+      /* "Silber, nicht Grau" */
+      --silver: #c0c0c0;
+      --silver-bright: #e6e6e6;
+
+      --white: #ffffff;
+
+      /* very subtle Xmas accents */
+      --gold: #d4af37;
+      --red:  #b83d3d;
+
+      --shadow-1: 0 10px 24px rgba(0,0,0,0.55);
+      --shadow-2: 0 24px 60px rgba(0,0,0,0.75);
+
+      --radius-phone: 30px;
+      --radius-tile: 18px;
+      --radius-modal: 22px;
+
+      --ease-fast: 0.18s ease-out;
+      --ease-med:  0.28s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, "SF Pro Text", "SF Pro Display",
+        Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--white);
+
+      background:
+        radial-gradient(circle at 15% 10%, rgba(212,175,55,0.08), transparent 40%),
+        radial-gradient(circle at 85% 20%, rgba(184,61,61,0.08), transparent 45%),
+        radial-gradient(circle at top, #1a1b22 0%, var(--bg-1) 35%, var(--bg-0) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 10px 28px;
+    }
+
+    /* Phone shell */
+    .phone {
+      position: relative;
+      width: 100%;
+      max-width: 430px;
+      background:
+        linear-gradient(160deg, rgba(255,255,255,0.06), transparent 35%),
+        linear-gradient(145deg, #0f1018, #050509);
+      border-radius: var(--radius-phone);
+      border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: var(--shadow-2);
+      overflow: hidden;
+    }
+
+    .notch {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 140px;
+      height: 24px;
+      border-radius: 999px;
+      background: #000;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .content {
+      padding: 42px 14px 18px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .title {
+      font-size: 1.1rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--silver);
+      font-weight: 600;
+    }
+
+    .subtitle {
+      margin-top: 4px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.25;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 0.66rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--silver-bright);
+      background:
+        linear-gradient(120deg, rgba(212,175,55,0.14), transparent 55%),
+        rgba(255,255,255,0.035);
+      border: 1px solid rgba(192,192,192,0.32);
+      white-space: nowrap;
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 30%, #fff, var(--gold));
+      box-shadow: 0 0 8px rgba(212,175,55,0.65);
+    }
+
+    .chip-row {
+      display: flex;
+      gap: 6px;
+      margin: 10px 0 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--silver);
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(192,192,192,0.26);
+    }
+
+    .chip-accent {
+      color: #ffe7e7;
+      border-color: rgba(184,61,61,0.7);
+      background:
+        linear-gradient(120deg, rgba(184,61,61,0.38), rgba(184,61,61,0.06));
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 9px;
+      margin-top: 10px;
+    }
+
+    .door {
+      position: relative;
+      padding-top: 86%;
+      border-radius: var(--radius-tile);
+      background:
+        radial-gradient(circle at 70% 15%, rgba(212,175,55,0.12), transparent 45%),
+        radial-gradient(circle at 20% 85%, rgba(184,61,61,0.10), transparent 50%),
+        var(--tile-bg);
+      border: 1px solid var(--tile-border);
+      box-shadow: var(--shadow-1);
+      overflow: hidden;
+      cursor: pointer;
+      transition:
+        transform var(--ease-fast),
+        border-color var(--ease-fast),
+        box-shadow var(--ease-fast),
+        background var(--ease-med),
+        opacity var(--ease-fast);
+    }
+
+    .door:hover {
+      transform: translateY(-2px) scale(1.015);
+      border-color: rgba(212,175,55,0.55);
+      box-shadow:
+        0 14px 32px rgba(0,0,0,0.7),
+        0 0 14px rgba(212,175,55,0.14);
+    }
+
+    .door:active {
+      transform: scale(0.985);
+    }
+
+    .door-inner {
+      position: absolute;
+      inset: 0;
+      padding: 8px 8px 7px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .door-num {
+      font-size: 1.06rem;
+      font-weight: 650;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      text-shadow: 0 1px 8px rgba(0,0,0,0.85);
+    }
+
+    .door-label {
+      font-size: 0.56rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--silver);
+      opacity: 0.9;
+      margin-top: 2px;
+    }
+
+    .door-tag-row {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .door-tag {
+      margin-left: auto;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 0.52rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--silver-bright);
+      border: 1px solid rgba(192,192,192,0.55);
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(8px);
+      white-space: nowrap;
+    }
+
+    .door-icon {
+      font-size: 0.7rem;
+      opacity: 0.9;
+    }
+
+    /* Locked state */
+    .door.locked {
+      opacity: 0.6;
+      cursor: default;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,0,0,0.9));
+    }
+
+    .door.locked:hover {
+      transform: none;
+      border-color: var(--tile-border);
+      box-shadow: var(--shadow-1);
+    }
+
+    /* Modal */
+    .backdrop {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 50;
+
+      background:
+        radial-gradient(circle at 20% 10%, rgba(212,175,55,0.10), transparent 40%),
+        radial-gradient(circle at 80% 15%, rgba(184,61,61,0.10), transparent 45%),
+        rgba(0,0,0,0.92);
+      backdrop-filter: blur(12px);
+    }
+
+    .backdrop.visible {
+      display: flex;
+      animation: fadeIn 0.16s ease-out;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 395px;
+      max-height: min(620px, 82vh);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+
+      border-radius: var(--radius-modal);
+      border: 1px solid rgba(192,192,192,0.45);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(212,175,55,0.16), transparent 50%),
+        rgba(7,7,12,0.985);
+      box-shadow:
+        0 22px 55px rgba(0,0,0,0.9),
+        inset 0 0 0 1px rgba(255,255,255,0.03);
+
+      transform: translateY(14px) scale(0.98);
+      animation: popIn 0.2s ease-out forwards;
+    }
+
+    .modal-hero {
+      position: relative;
+      width: 100%;
+      padding-top: 58%;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.0)),
+        #0b0c14;
+      overflow: hidden;
+    }
+
+    .modal-hero img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.02);
+      filter: saturate(1.05);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.78), transparent 60%);
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.35);
+      background: rgba(0,0,0,0.55);
+      color: var(--white);
+      font-size: 0.9rem;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: transform var(--ease-fast), background var(--ease-fast);
+    }
+
+    .close:hover {
+      transform: scale(1.05);
+      background: rgba(0,0,0,0.8);
+    }
+
+    .modal-body {
+      padding: 14px 16px 16px;
+      overflow-y: auto;
+    }
+
+    .day-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--silver);
+      margin-bottom: 4px;
+    }
+
+    .modal-title {
+      font-size: 1.12rem;
+      font-weight: 620;
+      margin-bottom: 8px;
+    }
+
+    .modal-text {
+      font-size: 0.92rem;
+      line-height: 1.45;
+      color: rgba(246,246,250,0.98);
+      margin-bottom: 14px;
+      white-space: pre-wrap;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .meta-left {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(192,192,192,0.9);
+    }
+
+    .meta-tag {
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #ffe9b6;
+      border: 1px solid rgba(212,175,55,0.85);
+      background:
+        linear-gradient(120deg, rgba(212,175,55,0.45), rgba(0,0,0,0.9));
+      white-space: nowrap;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 60;
+      display: none;
+      align-items: center;
+      gap: 7px;
+
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.85);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #f7f7f7;
+      font-size: 0.75rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .toast.visible {
+      display: inline-flex;
+      animation: fadeIn 0.14s ease-out;
+    }
+
+    .toast-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 7px rgba(212,175,55,0.8);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.93);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @media (max-width: 385px) {
+      .grid { gap: 7px; }
+      .content { padding-left: 12px; padding-right: 12px; }
+      .door-num { font-size: 1rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="phone">
+    <div class="notch"></div>
+
+    <div class="content">
+      <div class="header">
+        <div>
+          <div class="title">Advent 2025</div>
+          <div class="subtitle">
+            Dein persönlicher, digitaler Adventskalender
+            im Schwarz/Weiß/Silber-Look.
+          </div>
+        </div>
+
+        <div class="pill">
+          <span class="pill-dot"></span>
+          <span id="rangeLabel">1.–24. Dezember 2025</span>
+        </div>
+      </div>
+
+      <div class="chip-row">
+        <span class="chip">White · Black · Silver</span>
+        <span class="chip chip-accent">Subtle Xmas</span>
+        <span class="chip">iPhone-first</span>
+      </div>
+
+      <div class="grid" id="grid"></div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="backdrop" id="backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-hero">
+        <img id="modalImg" alt="Bild zum Türchen" />
+        <div class="hero-overlay"></div>
+        <button class="close" id="closeBtn" aria-label="Schließen">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="day-label" id="modalDay"></div>
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-text" id="modalText"></div>
+        <div class="meta">
+          <div class="meta-left">Advent 2025 · White/Black/Silver</div>
+          <div class="meta-tag" id="modalTag"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <span class="toast-dot"></span>
+    <span id="toastMsg"></span>
+  </div>
+
+  <script>
+    /* =========================================================
+       SETTINGS
+       ========================================================= */
+
+    // Setze auf true, wenn Türchen erst am jeweiligen Datum
+    // geöffnet werden sollen.
+    const LOCK_BY_DATE = true;
+
+    // Weil dein Kalender für 2025 gedacht ist:
+    const YEAR = 2025;
+
+    // Optional: Name der beschenkten Person (nur Anzeige)
+    const RECIPIENT = "";
+
+    /* =========================================================
+       CONTENT – SAMPLE + PLACEHOLDER
+       =========================================================
+       So ersetzt du später schnell alles:
+
+       1) Ändere title/text/tag pro Tag
+       2) Ersetze image:
+          - Wenn du eigene Bilder mit GitHub hochlädst:
+            Lege einen Ordner "images" an.
+            Nenne Bilder z.B. day01.jpg, day02.jpg, ...
+            Dann bleibt image: "images/day01.jpg"
+
+       3) Alternativ kannst du auch eine volle https-URL nutzen.
+    */
+
+    const entries = [
+      {
+        day: 1,
+        title: "Ankommen im Advent",
+        tag: "Warm Start",
+        image: "images/day01.jpg",
+        text:
+`Heute nur ein kleiner, leiser Anfang.
+Ein Moment, in dem der Dezember auf Pause drückt
+und du spürst: Das hier ist für dich gemacht.`
+      },
+      {
+        day: 2,
+        title: "Silberne Ruhe",
+        tag: "Calm",
+        image: "images/day02.jpg",
+        text:
+`Wenn heute alles zu schnell ist:
+Nimm dir 60 Sekunden.
+
+Nichts leisten.
+Nur atmen.
+Nur sein.`
+      },
+      {
+        day: 3,
+        title: "Mini-Quest",
+        tag: "Tiny Task",
+        image: "images/day03.jpg",
+        text:
+`Deine Aufgabe für heute:
+Mach eine Sache absichtlich langsam.
+Einen Tee.
+Einen Spaziergang.
+Eine Nachricht.
+
+Langsam ist auch Stärke.`
+      },
+      {
+        day: 4,
+        title: "Schwarz & Weiß",
+        tag: "Thought",
+        image: "images/day04.jpg",
+        text:
+`Nicht alles muss heute glänzen.
+Manchmal reicht es,
+einfach nur da zu sein
+und den Tag nicht größer zu machen als er ist.`
+      },
+      {
+        day: 5,
+        title: "Kleines Leuchten",
+        tag: "Spark",
+        image: "images/day05.jpg",
+        text:
+`Finde heute ein winziges Highlight:
+ein Licht, ein Duft, ein Satz, ein Blick.
+
+Und nimm es mit.`
+      },
+      {
+        day: 6,
+        title: "Nikolaus-Vibes",
+        tag: "Nikolaus",
+        image: "images/day06.jpg",
+        text:
+`Offizielle Erlaubnis:
+Heute darf es süß sein.
+Und du darfst dich selbst
+ein bisschen feiern.`
+      }
+    ];
+
+    // Auto-fill 7–24 falls du sie noch nicht ersetzt hast:
+    for (let d = 7; d <= 24; d++) {
+      if (!entries.find(e => e.day === d)) {
+        entries.push({
+          day: d,
+          title: `Türchen ${String(d).padStart(2, "0")}`,
+          tag: "Your Content",
+          image: `images/day${String(d).padStart(2, "0")}.jpg`,
+          text:
+`Platzhalter für deine Inhalte.
+
+Ersetze:
+- title
+- text
+- tag
+- image
+
+Tipp:
+Bilder im Repo unter /images/
+z.B. day${String(d).padStart(2, "0")}.jpg`
+        });
+      }
+    }
+
+    entries.sort((a, b) => a.day - b.day);
+
+    /* =========================================================
+       RUNTIME
+       ========================================================= */
+
+    const grid = document.getElementById("grid");
+    const backdrop = document.getElementById("backdrop");
+
+    const modalImg = document.getElementById("modalImg");
+    const modalDay = document.getElementById("modalDay");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalText = document.getElementById("modalText");
+    const modalTag = document.getElementById("modalTag");
+
+    const closeBtn = document.getElementById("closeBtn");
+
+    const toast = document.getElementById("toast");
+    const toastMsg = document.getElementById("toastMsg");
+
+    const rangeLabel = document.getElementById("rangeLabel");
+    rangeLabel.textContent = `1.–24. Dezember ${YEAR}`;
+
+    // "Heute" nur für Lock-Logik relevant
+    const now = new Date();
+    const isDecember = now.getMonth() === 11;
+    const todayDay = isDecember ? now.getDate() : 0;
+
+    function isLocked(day) {
+      if (!LOCK_BY_DATE) return false;
+      if (!isDecember) return true;        // außerhalb Dezembers alles gesperrt
+      return day > todayDay;
+    }
+
+    function showToast(msg) {
+      toastMsg.textContent = msg;
+      toast.classList.add("visible");
+      window.setTimeout(() => toast.classList.remove("visible"), 1800);
+    }
+
+    function openModal(entry) {
+      modalImg.src = entry.image;
+      modalDay.textContent = `Tag ${entry.day} · ${YEAR}`;
+      modalTitle.textContent = entry.title + (RECIPIENT ? ` · ${RECIPIENT}` : "");
+      modalText.textContent = entry.text;
+      modalTag.textContent = entry.tag || "Advent";
+
+      backdrop.classList.add("visible");
+      backdrop.setAttribute("aria-hidden", "false");
+    }
+
+    function closeModal() {
+      backdrop.classList.remove("visible");
+      backdrop.setAttribute("aria-hidden", "true");
+    }
+
+    closeBtn.addEventListener("click", closeModal);
+
+    backdrop.addEventListener("click", (e) => {
+      if (e.target === backdrop) closeModal();
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeModal();
+    });
+
+    function makeDoor(entry) {
+      const locked = isLocked(entry.day);
+
+      const door = document.createElement("div");
+      door.className = "door" + (locked ? " locked" : "");
+      door.setAttribute("data-day", entry.day);
+
+      const inner = document.createElement("div");
+      inner.className = "door-inner";
+
+      const top = document.createElement("div");
+
+      const num = document.createElement("div");
+      num.className = "door-num";
+      num.textContent = String(entry.day).padStart(2, "0");
+
+      const label = document.createElement("div");
+      label.className = "door-label";
+      label.textContent = locked ? "Gesperrt" : "Öffnen";
+
+      top.appendChild(num);
+      top.appendChild(label);
+
+      const bottom = document.createElement("div");
+      bottom.className = "door-tag-row";
+
+      const icon = document.createElement("span");
+      icon.className = "door-icon";
+      icon.textContent = locked ? "🔒" : "✧";
+
+      const tag = document.createElement("span");
+      tag.className = "door-tag";
+      tag.textContent = entry.tag || "Advent";
+
+      bottom.appendChild(icon);
+      bottom.appendChild(tag);
+
+      inner.appendChild(top);
+      inner.appendChild(bottom);
+
+      door.appendChild(inner);
+
+      door.addEventListener("click", () => {
+        if (isLocked(entry.day)) {
+          showToast("Dieses Türchen ist noch nicht dran. ✨");
+          return;
+        }
+        openModal(entry);
+      });
+
+      return door;
+    }
+
+    entries.forEach(entry => {
+      grid.appendChild(makeDoor(entry));
+    });
+
+  </script>
+</body>
+</html>
