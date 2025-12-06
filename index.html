@@ -232,14 +232,152 @@
     "Finde heute ein zartes Highlight\nund halte kurz inne."
   ];
 
-  for (let d = 1; d <= 24; d++) {
-    entries.push({
-      day: d,
-      title: `Türchen ${d}`,
-      text: sampleTexts[(d-1) % sampleTexts.length],
-      image: `images/day${String(d).padStart(2,'0')}.jpg`
-    });
+  const entries = [
+  {
+    day: 1,
+    title: "Ein leiser Anfang",
+    text: "Heute beginnt etwas Kleines, Warmes.\nEin Advent, der nur für dich da ist.",
+    image: "images/day01.jpg"
+  },
+  {
+    day: 2,
+    title: "Ein Atemzug Ruhe",
+    text: "Nimm dir einen Moment.\nNur für dich.\nGanz ohne Anspruch.",
+    image: "images/day02.jpg"
+  },
+  {
+    day: 3,
+    title: "Mini-Freude",
+    text: "Finde heute etwas Kleines, das dich lächeln lässt.\nEgal wie winzig es ist.",
+    image: "images/day03.jpg"
+  },
+  {
+    day: 4,
+    title: "Sanfter Gedanke",
+    text: "Du musst nicht perfekt sein.\nNur du – das reicht.",
+    image: "images/day04.jpg"
+  },
+  {
+    day: 5,
+    title: "Ein Lichtmoment",
+    text: "Heute wartet irgendwo ein kleines Leuchten auf dich.\nVielleicht findest du es sogar unerwartet.",
+    image: "images/day05.jpg"
+  },
+  {
+    day: 6,
+    title: "Nikolaus-Tag",
+    text: "Heute darf es weich, süß und warm sein.\nEin bisschen wie du.",
+    image: "images/day06.jpg"
+  },
+  {
+    day: 7,
+    title: "Ein warmer Blick",
+    text: "Manchmal verändert ein einziger Gedanke alles.\nHeute darf er freundlich sein.",
+    image: "images/day07.jpg"
+  },
+  {
+    day: 8,
+    title: "Kleine Pause",
+    text: "Wenn der Tag zu schnell ist:\nHalte kurz an.\nEinfach nur atmen.",
+    image: "images/day08.jpg"
+  },
+  {
+    day: 9,
+    title: "Zarter Mut",
+    text: "Mut muss nicht laut sein.\nManchmal reicht ein einziger, kleiner Schritt.",
+    image: "images/day09.jpg"
+  },
+  {
+    day: 10,
+    title: "Ein Funke",
+    text: "Heute schenkt dir der Tag vielleicht einen kleinen Funken Freude.\nHalte ihn fest.",
+    image: "images/day10.jpg"
+  },
+  {
+    day: 11,
+    title: "Ein sanftes Lächeln",
+    text: "Vielleicht findest du heute einen Moment,\nder dir ein Lächeln schenkt.",
+    image: "images/day11.jpg"
+  },
+  {
+    day: 12,
+    title: "Halbzeitgefühl",
+    text: "Du machst das gut.\nAuch an Tagen, die sich schwerer anfühlen.",
+    image: "images/day12.jpg"
+  },
+  {
+    day: 13,
+    title: "Kleine Erinnerung",
+    text: "Du darfst weich sein.\nDu darfst müde sein.\nDu darfst einfach du sein.",
+    image: "images/day13.jpg"
+  },
+  {
+    day: 14,
+    title: "Ein Moment für dich",
+    text: "Heute gehört dir ein kleiner Augenblick,\nganz ohne Eile.",
+    image: "images/day14.jpg"
+  },
+  {
+    day: 15,
+    title: "Zartes Licht",
+    text: "Vielleicht scheint heute irgendwo ein Licht,\ndas nur du bemerken kannst.",
+    image: "images/day15.jpg"
+  },
+  {
+    day: 16,
+    title: "Ein stiller Gruß",
+    text: "Ein kleiner Gedanke an dich.\nLeise, aber warm.",
+    image: "images/day16.jpg"
+  },
+  {
+    day: 17,
+    title: "Liebevolles Detail",
+    text: "Achte heute auf etwas Schönes in deiner Umgebung.\nManchmal versteckt es sich.",
+    image: "images/day17.jpg"
+  },
+  {
+    day: 18,
+    title: "Ein Wunsch",
+    text: "Ich wünsche dir heute einen Moment,\nder dir gut tut.",
+    image: "images/day18.jpg"
+  },
+  {
+    day: 19,
+    title: "Balsam",
+    text: "Vielleicht brauchst du heute etwas Sanftes.\nHier ist es.",
+    image: "images/day19.jpg"
+  },
+  {
+    day: 20,
+    title: "Ein warmer Faden",
+    text: "Halte dich heute an etwas Kleinem fest,\ndas dich wärmt.",
+    image: "images/day20.jpg"
+  },
+  {
+    day: 21,
+    title: "Kurz vor Weihnachten",
+    text: "Du bist fast da.\nUnd du machst das gut.",
+    image: "images/day21.jpg"
+  },
+  {
+    day: 22,
+    title: "Ein bisschen Magie",
+    text: "Vielleicht fühlst du heute ein kleines Funkeln.\nEs gehört dir.",
+    image: "images/day22.jpg"
+  },
+  {
+    day: 23,
+    title: "Vorfestlicher Moment",
+    text: "Atme ein.\nAtme aus.\nMorgen ist ein besonderer Tag.",
+    image: "images/day23.jpg"
+  },
+  {
+    day: 24,
+    title: "Heiligabend",
+    text: "Danke, dass es dich gibt.\nDu bist etwas ganz Besonderes.",
+    image: "images/day24.jpg"
   }
+];
 
   const grid = document.getElementById("grid");
   const backdrop = document.getElementById("backdrop");
