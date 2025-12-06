@@ -2,275 +2,194 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <title>Adventskalender 2025</title>
+  <title>Hallo Prinzessin ♡ – Advent 2025</title>
 
-  <!-- iPhone / PWA-like -->
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="theme-color" content="#000000" />
 
   <style>
-    /* =========================================================
-       Minimal Advent 2025
-       Colors: Black / White / Silver
-       No gradients. Clean. App-like without fake device UI.
-       ========================================================= */
-
-    :root{
-      --bg: #000000;
-      --panel: #000000;
-      --tile: #000000;
-      --silver: #c0c0c0;
-      --white: #ffffff;
-
-      --radius-panel: 18px;
-      --radius-tile: 14px;
-
-      --border-weak: 1px solid rgba(192,192,192,0.28);
-      --border-strong: 1px solid rgba(192,192,192,0.55);
-
-      --ease: 0.18s ease-out;
+    :root {
+      --bg: #FFF7FA;
+      --card: #FFFFFF;
+      --border: #F3D9E6;
+      --accent: #D86DA6;
+      --text-main: #3B2F33;
+      --text-soft: #6A5E63;
+      --radius: 8px;
+      --transition: 0.18s ease-out;
     }
 
-    *{
-      box-sizing:border-box;
+    * {
+      box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
-      margin:0;
-      padding:0;
+      margin: 0;
+      padding: 0;
     }
 
-    html, body{
-      height:100%;
+    html, body {
+      height: 100%;
       background: var(--bg);
-      color: var(--white);
+      color: var(--text-main);
+      font-family: -apple-system, system-ui, "SF Pro Text", "SF Pro Display", sans-serif;
     }
 
-    body{
-      font-family: system-ui, -apple-system, "SF Pro Text", "SF Pro Display",
-        Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      display:flex;
-      justify-content:center;
-      align-items:flex-start;
-
-      /* Safe-area friendly */
-      padding:
-        calc(14px + env(safe-area-inset-top))
-        calc(12px + env(safe-area-inset-right))
-        calc(22px + env(safe-area-inset-bottom))
-        calc(12px + env(safe-area-inset-left));
+    body {
+      padding: calc(18px + env(safe-area-inset-top))
+               calc(12px + env(safe-area-inset-right))
+               calc(18px + env(safe-area-inset-bottom))
+               calc(12px + env(safe-area-inset-left));
+      display: flex;
+      justify-content: center;
     }
 
-    .app{
-      width:100%;
+    .app {
+      width: 100%;
       max-width: 440px;
     }
 
-    .header{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:12px;
-      padding: 6px 2px 14px;
-      border-bottom: var(--border-weak);
-      margin-bottom: 14px;
+    .header {
+      margin-bottom: 22px;
     }
 
-    .title{
-      font-size: 1.05rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--silver);
-      font-weight: 600;
+    .title {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--accent);
     }
 
-    .subtitle{
+    .subtitle {
       margin-top: 6px;
-      font-size: 0.8rem;
-      line-height: 1.25;
-      color: rgba(255,255,255,0.72);
-      max-width: 26ch;
+      font-size: 1rem;
+      line-height: 1.35;
+      color: var(--text-soft);
+      max-width: 28ch;
     }
 
-    .date{
-      font-size: 0.7rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--silver);
-      white-space: nowrap;
-      padding: 6px 10px;
-      border: var(--border-weak);
-      border-radius: 999px;
-    }
-
-    .grid{
-      display:grid;
+    .grid {
+      display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
+      gap: 12px;
     }
 
-    .door{
-      position:relative;
+    .door {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       aspect-ratio: 1 / 1;
-      background: var(--tile);
-      border: var(--border-weak);
-      border-radius: var(--radius-tile);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      transition: border-color var(--ease), transform var(--ease), opacity var(--ease);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--accent);
+      cursor: pointer;
+      transition: box-shadow var(--transition), transform var(--transition);
     }
 
-    .door:hover{
-      border: var(--border-strong);
-      transform: translateY(-1px);
+    .door:hover {
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
     }
 
-    .door:active{
-      transform: scale(0.985);
-    }
-
-    .door-number{
-      font-size: 1.25rem;
-      font-weight: 650;
-      letter-spacing: 0.08em;
-      color: var(--white);
-    }
-
-    .door.locked{
-      opacity: 0.45;
+    .door.locked {
+      color: #C9C1C6;
       cursor: default;
     }
 
-    .lock-badge{
-      position:absolute;
-      bottom: 7px;
-      right: 8px;
-      font-size: 0.75rem;
-      color: var(--silver);
+    .door.locked:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .lock {
+      font-size: 0.9rem;
+      margin-top: 4px;
+      color: #C9C1C6;
     }
 
     /* Modal */
-    .backdrop{
+    .backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.92);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:
-        calc(12px + env(safe-area-inset-top))
-        calc(12px + env(safe-area-inset-right))
-        calc(16px + env(safe-area-inset-bottom))
-        calc(12px + env(safe-area-inset-left));
-      z-index: 50;
+      background: rgba(0,0,0,0.35);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      backdrop-filter: blur(6px);
     }
 
-    .backdrop.visible{
-      display:flex;
+    .backdrop.visible {
+      display: flex;
     }
 
-    .modal{
-      width:100%;
+    .modal {
+      width: 100%;
       max-width: 420px;
-      background: var(--panel);
-      border: var(--border-strong);
-      border-radius: var(--radius-panel);
-      overflow:hidden;
-    }
-
-    .hero{
-      width:100%;
-      aspect-ratio: 16 / 9;
-      background: #000;
-      border-bottom: var(--border-weak);
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding-bottom: 12px;
+      overflow: hidden;
       position: relative;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color: rgba(255,255,255,0.6);
-      font-size: 0.8rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
     }
 
-    .hero img{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
+    .modal-img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: white;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+    }
+
+    .modal-img img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      display:block;
+      display: none;
     }
 
-    .hero-placeholder{
-      padding: 10px;
-      text-align:center;
+    .modal-body {
+      padding: 16px 18px;
     }
 
-    .close{
-      position:absolute;
-      top: 10px;
-      right: 10px;
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      background: #000;
-      border: var(--border-weak);
-      color: var(--white);
-      font-size: 0.95rem;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
+    .modal-day {
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      margin-bottom: 4px;
     }
 
-    .body{
-      padding: 14px 16px 18px;
-    }
-
-    .day-label{
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--silver);
-      margin-bottom: 6px;
-    }
-
-    .modal-title{
-      font-size: 1.2rem;
-      font-weight: 600;
+    .modal-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--accent);
       margin-bottom: 10px;
     }
 
-    .modal-text{
-      font-size: 0.95rem;
+    .modal-text {
+      font-size: 1rem;
       line-height: 1.45;
-      color: rgba(255,255,255,0.92);
       white-space: pre-wrap;
     }
 
-    /* Toast */
-    .toast{
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: calc(14px + env(safe-area-inset-bottom));
-      background: #000;
-      border: var(--border-weak);
-      color: var(--white);
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      display:none;
-      z-index: 60;
-    }
-    .toast.visible{ display:block; }
-
-    @media (max-width: 370px){
-      .grid{ gap: 8px; }
-      .door-number{ font-size: 1.15rem; }
+    .close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 30px;
+      height: 30px;
+      background: white;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1rem;
+      color: var(--accent);
+      cursor: pointer;
     }
   </style>
 </head>
@@ -278,227 +197,107 @@
 <body>
   <main class="app">
     <header class="header">
-      <div>
-        <div class="title">Advent 2025</div>
-        <div class="subtitle">
-          Dein minimalistischer digitaler Adventskalender.
-          Schwarz · Weiß · Silber.
-        </div>
-      </div>
-      <div class="date" id="dateRange">1–24 Dez 2025</div>
+      <div class="title">Hallo Prinzessin ♡</div>
+      <div class="subtitle">Ein kleiner Adventskalender … jeden Tag eine Freude nur für dich.</div>
     </header>
 
-    <section class="grid" id="grid" aria-label="Adventskalender Türchen"></section>
+    <section class="grid" id="grid"></section>
   </main>
 
-  <!-- Modal -->
-  <div class="backdrop" id="backdrop" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true">
-      <div class="hero" id="hero">
-        <span class="hero-placeholder" id="heroPlaceholder">Bild folgt</span>
-        <img id="heroImg" alt="Bild zum Türchen" />
-        <button class="close" id="closeBtn" aria-label="Schließen">✕</button>
+  <div class="backdrop" id="backdrop">
+    <div class="modal">
+      <div class="modal-img">
+        <span id="imgPlaceholder">BILD FOLGT</span>
+        <img id="modalImg">
       </div>
-      <div class="body">
-        <div class="day-label" id="modalDay"></div>
+      <div class="close" id="closeBtn">×</div>
+      <div class="modal-body">
+        <div class="modal-day" id="modalDay"></div>
         <div class="modal-title" id="modalTitle"></div>
         <div class="modal-text" id="modalText"></div>
       </div>
     </div>
   </div>
 
-  <div class="toast" id="toast"><span id="toastMsg"></span></div>
+<script>
+  const LOCK_BY_DATE = true;
+  const YEAR = 2025;
 
-  <script>
-    /* =========================================================
-       SETTINGS
-       ========================================================= */
-    const YEAR = 2025;
+  const entries = [];
+  const sampleTexts = [
+    "Ein kleiner, stiller Anfang für dich.\nEin Moment nur für dein Herz.",
+    "Heute darfst du langsam sein.\nGanz ohne Druck.",
+    "Ein winziger Funke Freude — nur für dich.",
+    "Du musst heute nichts leisten.\nEinfach da sein reicht.",
+    "Finde heute ein zartes Highlight\nund halte kurz inne."
+  ];
 
-    // true = Türchen nur am jeweiligen Dezember-Tag öffnen
-    const LOCK_BY_DATE = true;
-
-    /* =========================================================
-       CONTENT
-       - Minimal, keine Tags im UI
-       - Bilder standardmäßig als lokale Repo-Dateien:
-         images/day01.jpg ... images/day24.jpg
-       ========================================================= */
-    const entries = [
-      {
-        day: 1,
-        title: "Ankommen im Advent",
-        text:
-`Heute nur ein kleiner, leiser Anfang.
-Ein Moment, in dem der Dezember kurz still wird
-und du merkst: Das ist für dich.`,
-        image: "images/day01.jpg"
-      },
-      {
-        day: 2,
-        title: "Ruhe in Silber",
-        text:
-`Wenn heute alles zu laut ist:
-nimm dir eine Minute.
-Nichts leisten. Nur atmen.`,
-        image: "images/day02.jpg"
-      },
-      {
-        day: 3,
-        title: "Mini-Quest",
-        text:
-`Mach eine Sache absichtlich langsam.
-Ein Tee. Ein Schritt. Eine Nachricht.`,
-        image: "images/day03.jpg"
-      },
-      {
-        day: 4,
-        title: "Kontrast",
-        text:
-`Du musst nicht jeden Tag glänzen.
-Auch leise Tage zählen.`,
-        image: "images/day04.jpg"
-      },
-      {
-        day: 5,
-        title: "Kleines Licht",
-        text:
-`Finde heute ein winziges Highlight
-und nimm es bewusst wahr.`,
-        image: "images/day05.jpg"
-      },
-      {
-        day: 6,
-        title: "Nikolaus",
-        text:
-`Offizielle Erlaubnis:
-Heute darf es süß sein.`,
-        image: "images/day06.jpg"
-      }
-    ];
-
-    // Auto-fill 7–24 mit Platzhaltern
-    for (let d = 7; d <= 24; d++) {
-      if (!entries.find(e => e.day === d)) {
-        entries.push({
-          day: d,
-          title: `Türchen ${String(d).padStart(2, "0")}`,
-          text:
-`Platzhalter für deinen Text.
-
-Ersetze title, text und ggf. image
-im entries-Array.`,
-          image: `images/day${String(d).padStart(2, "0")}.jpg`
-        });
-      }
-    }
-    entries.sort((a,b) => a.day - b.day);
-
-    /* =========================================================
-       RUNTIME
-       ========================================================= */
-    const grid = document.getElementById("grid");
-    const backdrop = document.getElementById("backdrop");
-
-    const dateRange = document.getElementById("dateRange");
-    dateRange.textContent = `1–24 Dez ${YEAR}`;
-
-    const modalDay = document.getElementById("modalDay");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalText = document.getElementById("modalText");
-
-    const hero = document.getElementById("hero");
-    const heroImg = document.getElementById("heroImg");
-    const heroPlaceholder = document.getElementById("heroPlaceholder");
-    const closeBtn = document.getElementById("closeBtn");
-
-    const toast = document.getElementById("toast");
-    const toastMsg = document.getElementById("toastMsg");
-
-    const now = new Date();
-    const isDecember = now.getMonth() === 11;
-    const todayDay = isDecember ? now.getDate() : 0;
-
-    function isLocked(day){
-      if (!LOCK_BY_DATE) return false;
-      if (!isDecember) return true;
-      return day > todayDay;
-    }
-
-    function showToast(msg){
-      toastMsg.textContent = msg;
-      toast.classList.add("visible");
-      setTimeout(() => toast.classList.remove("visible"), 1600);
-    }
-
-    function openModal(entry){
-      modalDay.textContent = `Tag ${entry.day} · ${YEAR}`;
-      modalTitle.textContent = entry.title;
-      modalText.textContent = entry.text;
-
-      // Image handling: avoid broken icon
-      heroImg.style.display = "none";
-      heroPlaceholder.style.display = "block";
-      heroImg.src = entry.image || "";
-
-      if (entry.image) {
-        heroImg.onload = () => {
-          heroPlaceholder.style.display = "none";
-          heroImg.style.display = "block";
-        };
-        heroImg.onerror = () => {
-          heroImg.style.display = "none";
-          heroPlaceholder.style.display = "block";
-        };
-      }
-
-      backdrop.classList.add("visible");
-      backdrop.setAttribute("aria-hidden", "false");
-    }
-
-    function closeModal(){
-      backdrop.classList.remove("visible");
-      backdrop.setAttribute("aria-hidden", "true");
-    }
-
-    closeBtn.addEventListener("click", closeModal);
-    backdrop.addEventListener("click", (e) => {
-      if (e.target === backdrop) closeModal();
+  for (let d = 1; d <= 24; d++) {
+    entries.push({
+      day: d,
+      title: `Türchen ${d}`,
+      text: sampleTexts[(d-1) % sampleTexts.length],
+      image: `images/day${String(d).padStart(2,'0')}.jpg`
     });
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeModal();
-    });
+  }
 
-    function makeDoor(entry){
-      const locked = isLocked(entry.day);
+  const grid = document.getElementById("grid");
+  const backdrop = document.getElementById("backdrop");
+  const modalDay = document.getElementById("modalDay");
+  const modalTitle = document.getElementById("modalTitle");
+  const modalText = document.getElementById("modalText");
+  const modalImg = document.getElementById("modalImg");
+  const imgPlaceholder = document.getElementById("imgPlaceholder");
+  const closeBtn = document.getElementById("closeBtn");
 
-      const door = document.createElement("div");
-      door.className = "door" + (locked ? " locked" : "");
+  const now = new Date();
+  const isDecember = now.getMonth() === 11;
+  const today = isDecember ? now.getDate() : 0;
 
-      const num = document.createElement("div");
-      num.className = "door-number";
-      num.textContent = String(entry.day).padStart(2,"0");
-      door.appendChild(num);
+  function isLocked(day){
+    if (!LOCK_BY_DATE) return false;
+    if (!isDecember) return true;
+    return day > today;
+  }
 
-      if (locked){
-        const lock = document.createElement("div");
-        lock.className = "lock-badge";
-        lock.textContent = "🔒";
-        door.appendChild(lock);
-      }
+  function openModal(entry){
+    modalDay.textContent = `${entry.day}. Dezember`;
+    modalTitle.textContent = entry.title;
+    modalText.textContent = entry.text;
 
-      door.addEventListener("click", () => {
-        if (isLocked(entry.day)){
-          showToast("Dieses Türchen ist noch nicht dran.");
-          return;
-        }
-        openModal(entry);
-      });
+    modalImg.style.display = "none";
+    imgPlaceholder.style.display = "block";
+    modalImg.src = entry.image;
 
-      return door;
+    modalImg.onload = () => {
+      imgPlaceholder.style.display = "none";
+      modalImg.style.display = "block";
+    };
+
+    backdrop.classList.add("visible");
+  }
+
+  function closeModal(){
+    backdrop.classList.remove("visible");
+  }
+
+  closeBtn.onclick = closeModal;
+  backdrop.onclick = e => { if(e.target === backdrop) closeModal(); };
+
+  entries.forEach(e => {
+    const d = document.createElement("div");
+    d.className = "door" + (isLocked(e.day) ? " locked" : "");
+    d.innerHTML = isLocked(e.day)
+      ? `<div>${String(e.day).padStart(2,"0")}</div><div class="lock">🔒</div>`
+      : String(e.day).padStart(2,"0");
+
+    if (!isLocked(e.day)) {
+      d.onclick = () => openModal(e);
     }
 
-    entries.forEach(e => grid.appendChild(makeDoor(e)));
-  </script>
+    grid.appendChild(d);
+  });
+</script>
+
 </body>
 </html>
